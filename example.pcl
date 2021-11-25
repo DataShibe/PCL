@@ -1,0 +1,9 @@
+g G = 9.81
+m Mass = 100
+
+calc f : g * m
+f Force : G, Mass
+
+
+final Force
+

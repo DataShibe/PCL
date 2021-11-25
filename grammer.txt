@@ -1,0 +1,14 @@
+valid operators:
+  +, -, *, /, ** with brackets
+
+
+calc <res> : <args> - define new opperation with the output type of <res> and the formal definition of <args>
+
+<baseType> <base> = <override> - overrides the <base> with the <override>, casts type
+<baseType> <base> = <expr> - overrides the <base> with the result of <expr>, casts type
+
+<baseType> <base> : <args> - call operator based on <baseType> and the types of the arguments override the <base> with the result
+
+final <globalResult> - define that the main result of the program and can be anywhere in the program
+
+#<comment> - comment
