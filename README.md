@@ -7,7 +7,7 @@ PCL is a very basic language in the form of a declarative language (I hope so) b
 Here is the Wiki article of declarative programming languages: https://en.wikipedia.org/wiki/Declarative_programming
 
 # What can the language do?
-PCL can define Variables and do calculations with them. You can also declare different ratios of types, for example the type 'g' is calculated by multiplying 'm' with 'f'. You can then calculate variables with these ratios and print them out. Overriding Variables and setting variables to other variables is also included.
+PCL can define Variables and do calculations with them. You can also declare different ratios of types, for example the type 'g' is calculated by multiplying 'm' with 'f'. You can then calculate variables with these ratios and print them out. Overriding Variables and setting them to other ones is also included.
 
 If you want to know more about the syntax of the language, take a look at the grammar file and the example.
 
