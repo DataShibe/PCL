@@ -51,7 +51,6 @@ class CommandExecutor:
                     cleanExpression.append(str(self.getVarValue(expressionIterator, callLine)))
 
             # join the clean evaluation together and write it into returnValue
-            print("Eval: " + " ".join(cleanExpression))
             returnValue = eval(" ".join(cleanExpression))
 
         elif creationCommand.name == "callOperator":
@@ -91,7 +90,6 @@ class CommandExecutor:
                         counter += 1
 
             # join the clean term together and write it into returnValue
-            print("Eval: " + " ".join(termClear))
             returnValue = eval(" ".join(termClear))
 
         return returnValue
