@@ -51,6 +51,7 @@ class CommandExecutor:
                     cleanExpression.append(str(self.getVarValue(expressionIterator, callLine)))
 
             # join the clean evaluation together and write it into returnValue
+            print("Eval: " + " ".join(cleanExpression))
             returnValue = eval(" ".join(cleanExpression))
 
         elif creationCommand.name == "callOperator":
@@ -70,13 +71,18 @@ class CommandExecutor:
                 # iterate over the term
                 for termIterator in term:
                     # if iterator is a operator add the operator to 'termClear'
-                    if termIterator in ["+", "-", "*", "/", "**"]:
+                    if termIterator in ["+", "-", "*", "/", "**", "(", ")"]:
                         termClear.append(termIterator)
 
                     else:
                         # get the value of the variable
                         typeOverload = termIterator
-                        matchingArgument = creationCommand.arguments[2 + counter]
+
+                        try:
+                            matchingArgument = creationCommand.arguments[2 + counter]
+                        except IndexError:
+                            self.printError("Missing arguments", callLine)
+
                         matchingArgumentEval = self.getVarValue(matchingArgument, creationCommandLine)
 
                         # write the variable to 'termClear'
@@ -85,6 +91,7 @@ class CommandExecutor:
                         counter += 1
 
             # join the clean term together and write it into returnValue
+            print("Eval: " + " ".join(termClear))
             returnValue = eval(" ".join(termClear))
 
         return returnValue
@@ -123,6 +130,7 @@ class Parser:
         lines = file.split("\n")
         commands = []
 
+        counter = 1
         for lineIter in lines:
             # remove empty commands
             line = [x for x in lineIter.split(" ") if x != '']
@@ -160,11 +168,14 @@ class Parser:
             if command.name is None:
                 continue
 
+            command.line = counter
+            counter += 1
+
             commands.append(command)
 
         return commands
 
-
+    
 class Main:
     def __init__(self):
         self.Parser = Parser()
