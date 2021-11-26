@@ -1,5 +1,6 @@
 valid operators:
   +, -, *, /, ** with brackets
+  you need to insert a space before and after every operator, otherwise it's getting ignored
 
 
 calc <res> : <args> - define new opperation with the output type of <res> and the formal definition of <args>
