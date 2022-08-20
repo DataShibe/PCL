@@ -36,4 +36,3 @@ This program will multiply `G` with `Mass` and print the result.
 # Links
 
 [S1mons Profile](https://www.github.com/S1monr3dSt0ne07)
-[PCL2](https://www.github.com/DataShibe/PCL2)
