@@ -1,0 +1,7 @@
+a A = 9
+b B = 30 * 2
+
+calc c : a + b
+c C : A, B
+
+final C
