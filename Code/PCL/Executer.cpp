@@ -1,4 +1,7 @@
 #include "Executer.h"
+#include "Tokenizer.h"
+#include "Error.h"
+#include "ExpressionEvaluator.h"
 #include "Command.h"
 #include "CommandTypes.h"
 #include "Variable.h"
@@ -14,6 +17,16 @@ using namespace std;
 
 Executer::Executer() {}
 
+float Executer::getVal(vector<char> types, vector<float> values, char type)
+{
+	for (int i = 0; i < types.size(); i++)
+	{
+		if (types[i] == type) return values[i];
+	}
+
+	return -1;
+}
+
 void Executer::execute(vector<Command> commandList)
 {
 	vector<Variable> variableBuffer;
@@ -26,8 +39,8 @@ void Executer::execute(vector<Command> commandList)
 		{
 			string type = command.getArgs()[0].getStr();
 			string name = command.getArgs()[1].getStr();
-			
-			float value = Utils::eval(Utils::getString(Utils::getFrom(command.getArgs(), 2)));
+
+			float value = ExpressionEvaluator::evaluate(Utils::getString(Utils::getFrom(command.getArgs(), 2)));
 
 			if (find(typeNameBuffer.begin(), typeNameBuffer.end(), type) != typeNameBuffer.end())
 				typeNameBuffer.push_back(type);
@@ -37,8 +50,8 @@ void Executer::execute(vector<Command> commandList)
 		else if (command.getType() == CommandTypes::CALC)
 		{
 			string name = command.getArgs()[0].getStr();
-			string def = command.getArgs()[1].getStr() + command.getArgs()[2].getStr() + command.getArgs()[3].getStr();
-			
+			string def = Utils::getString(Utils::getFrom(command.getArgs(), 1));
+
 			typeBuffer.push_back(Type(name, def));
 			typeNameBuffer.push_back(name);
 		}
@@ -46,8 +59,7 @@ void Executer::execute(vector<Command> commandList)
 		{
 			string type = command.getArgs()[0].getStr();
 			string name = command.getArgs()[1].getStr();
-			string var1 = command.getArgs()[2].getStr();
-			string var2 = command.getArgs()[3].getStr();
+			string vars = Utils::getString(Utils::getFrom(command.getArgs(), 2));
 
 			string def;
 
@@ -55,32 +67,54 @@ void Executer::execute(vector<Command> commandList)
 				if (t.getName() == type)
 					def = t.getDef();
 
-			char t1 = def[0];
-			char op = def[1];
-			char t2 = def[2];
+			vector<char> types;
+			vector<float> values;
+			for (int i = 0; i < def.size(); i++)
+			{
+				if (def[i] == ' ') continue;
+				else types.push_back(def[i]);
+			}
 
-			float t1Val = 0;
-			float t2Val = 0;
+			for (int i = 0; i < types.size(); i++)
+			{
+				values.push_back(0);
+			}
 
 			for (Variable v : variableBuffer)
 			{
-				if (v.getType()[0] == t1) t1Val = v.getValue();
-				if (v.getType()[0] == t2) t2Val = v.getValue();
+				for (int i = 0; i < types.size(); i++)
+				{
+					if (v.getType()[0] == types[i]) values[i] = v.getValue();
+				}
 			}
 
-			variableBuffer.push_back(Variable(type, name, Utils::eval(to_string(t1Val) + op + to_string(t2Val))));
+			string expr = "";
+
+			for (int i = 0; i < def.size(); i++)
+			{
+				if (!Utils::in(def[i], Tokenizer().operators) && def[i] != ' ')
+				{
+					expr += to_string(getVal(types, values, def[i]));
+					continue;
+				}
+				expr += def[i];
+			}
+
+			variableBuffer.push_back(Variable(type, name, ExpressionEvaluator::evaluate(expr)));
 		}
 		else if (command.getType() == CommandTypes::FINAL)
 		{
 			string var = command.getArgs()[0].getStr();
-			
-			float value = 0;
+
+			float value = -69;
 
 			for (Variable variable : variableBuffer)
 			{
 				if (variable.getName() == var)
 					value = variable.getValue();
 			}
+
+			if (value == -69) Error::lineError(command.getArgs()[0].getLine(), "Unknown variable: '" + var + "'!");
 
 			cout << value << endl;
 		}

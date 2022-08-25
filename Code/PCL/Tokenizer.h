@@ -14,9 +14,13 @@ public:
 
 	std::vector<Token> tokenize(std::string code);
 
+	std::vector<std::string> operators;
+
 private:
 	std::vector<std::string> commands;
-	std::vector<std::string> operators;
+
+	std::string prep(std::string code);
+
 	char ovr;
 	char col;
 };

@@ -24,14 +24,36 @@ bool Utils::in(char chr, vector<char> vec)
 	return false;
 }
 
-bool Utils::isNumber(string input)
+bool Utils::in(char chr, vector<string> vec)
 {
-	vector<char> digits = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' , '.'};
-	for (char i : input)
-		if (!Utils::in(i, digits)) return false;
+	for (string i : vec)
+		if (i[0] == chr) return true;
 
-	return true;
+	return false;
 
+}
+
+bool Utils::isNumber(string s)
+{
+	//size_t char_pos(0);
+	int char_pos = 0;
+
+	// check the significand
+	if (s[char_pos] == '+' || s[char_pos] == '-') char_pos++;
+
+	int n_nm, n_pt;
+	for (n_nm = 0, n_pt = 0; isdigit(s[char_pos]) || s[char_pos] == '.'; ++char_pos) {
+		s[char_pos] == '.' ? ++n_pt : ++n_nm;
+	}
+	if (n_pt > 1 || n_nm < 1) return false;
+
+	return char_pos == s.size();
+}
+
+bool Utils::isDigit(char input)
+{
+	vector<char> digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.' };
+	return in(input, digits);
 }
 
 bool Utils::eql(vector<int> a, vector<int> b)
@@ -73,54 +95,9 @@ string Utils::getString(vector<Token> a)
 {
 	string output = "";
 	for (Token i : a)
-		output += i.getStr();
+		output += i.getStr() + " ";
 
-	return output;
-}
-
-
-float Utils::eval(string expr)
-{
-	cout << expr << endl;
-
-	vector<char> operators = { '+', '-', '*', '/', '^' };
-
-	char op = ';';
-	float v1;
-	float v2;
-
-	for (char letter : expr)
-		if (Utils::in(letter, operators))
-			op = letter;
-
-	if (op == ';') return stof(expr);
-
-	vector<string> parts = Utils::split(expr, op);
-
-	v1 = stof(parts[0]);
-	v2 = stof(parts[1]);
-
-	float res = 0;
-
-	switch (op)
-	{
-	case '+':
-		res = v1 + v2;
-		break;
-	case '-':
-		res = v1 - v2;
-		break;
-	case '*':
-		res = v1 * v2;
-		break;
-	case '/':
-		res = v1 / v2;
-		break;
-	case '^':
-		res = pow(v1, v2);
-	}
-
-	return res;
+	return Utils::removeLastChar(output);
 }
 
 vector<Token> Utils::joinVectors(vector<Token> a, vector<Token> b)

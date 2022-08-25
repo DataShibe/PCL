@@ -133,6 +133,7 @@
     <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="PCL.cpp" />
+    <ClCompile Include="ExpressionEvaluator.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tokenizer.cpp" />
     <ClCompile Include="Type.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="CommandTypes.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="Executer.h" />
+    <ClInclude Include="ExpressionEvaluator.h" />
     <ClInclude Include="Interpreter.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Token.h" />

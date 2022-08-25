@@ -1,7 +1,8 @@
-a A = 9
-b B = 30 * 2
+a A = 30
+b B = 2
+c C = 4.5
 
-calc c : a + b
-c C : A, B
+calc d : b * (a + c)
+d D : A, B, C
 
-final C
+final D

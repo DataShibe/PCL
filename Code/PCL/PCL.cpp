@@ -12,16 +12,16 @@ using namespace std::literals;
 int main(int argc, char** argv)
 {
 
-	if (argc == 0)
+	if (argc == 1)
 	{
 		cout << "You need to enter a file! Usage: PCL.exe example.pcl" << endl;
 		return 0;
 	}
-	
-	bool debugOutput = true;
 
-	string inputFile = "code.pcl";
-	//inputFile = argv[1];
+	bool debugOutput = argc != 2;
+
+	//string inputFile = "code.pcl";
+	string inputFile = argv[1];
 
 	ifstream inputStream;
 	inputStream.open(inputFile);

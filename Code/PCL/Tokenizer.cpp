@@ -12,14 +12,29 @@ using namespace std;
 Tokenizer::Tokenizer()
 {
 	this->commands = { "calc", "final" };
-	this->operators = { "+", "-", "*", "/", "^" };
+	this->operators = { "+", "-", "*", "/", "^", "(", ")" };
 	this->ovr = '=';
 	this->col = ':';
+}
+
+string Tokenizer::prep(string code)
+{
+	string output = "";
+	for (char i : code)
+	{
+		if (i == ')') output += " ";
+		output += i;
+		if (i == '(') output += " ";
+	}
+
+	return output;
 }
 
 vector<Token> Tokenizer::tokenize(string code)
 {
 	vector<Token> tokenBuffer;
+
+	code = prep(code);
 
 	bool pastFinal = false;
 

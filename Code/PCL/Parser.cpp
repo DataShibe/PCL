@@ -27,44 +27,45 @@ vector<Command> Parser::parse(vector<Token> tokenList)
 			Token val = tokenBuffer[1];
 
 			commandBuffer.push_back(Command(CommandTypes::FINAL, { val }));
-	
-			tokenBuffer.erase(tokenBuffer.begin(), tokenBuffer.begin() + 2);
-		}
-		else if (Utils::eql(getTypes(tokenBuffer, 4), {TokenTypes::NAME, TokenTypes::NAME, TokenTypes::OVR, TokenTypes::VAL}))
-		{
-			cout << tokenBuffer[0].getLine() << endl;
 
+			tokenBuffer = eraseUntilNextLine(tokenBuffer[0].getLine(), tokenBuffer);
+		}
+		else if (Utils::eql(getTypes(tokenBuffer, 3), { TokenTypes::NAME, TokenTypes::NAME, TokenTypes::OVR }))
+		{
 			Token type = tokenBuffer[0];
 			Token name = tokenBuffer[1];
-			
+
 			vector<Token> val = Parser::getUntilNextLine(tokenBuffer[0].getLine(), tokenBuffer, 3);
 			vector<Token> temp = { type, name };
 
 			commandBuffer.push_back(Command(CommandTypes::OVRVAR, Utils::joinVectors(temp, val)));
 
-			tokenBuffer.erase(tokenBuffer.begin(), tokenBuffer.begin() + 3 + val.size());
+			tokenBuffer = eraseUntilNextLine(tokenBuffer[0].getLine(), tokenBuffer);
 		}
-		else if (Utils::eql(getTypes(tokenBuffer, 5), { TokenTypes::NAME, TokenTypes::NAME, TokenTypes::COL, TokenTypes::NAME, TokenTypes::NAME }))
+		else if (Utils::eql(getTypes(tokenBuffer, 3), { TokenTypes::NAME, TokenTypes::NAME, TokenTypes::COL }))
 		{
 			Token type = tokenBuffer[0];
 			Token var = tokenBuffer[1];
 			Token type1 = Token(tokenBuffer[3].getType(), Utils::removeLastChar(tokenBuffer[3].getStr()), tokenBuffer[3].getLine());
 			Token type2 = tokenBuffer[4];
 
-			commandBuffer.push_back(Command(CommandTypes::CALCVAR, { type, var, type1, type2 }));
+			vector<Token> types = Parser::getUntilNextLine(tokenBuffer[0].getLine(), tokenBuffer, 2);
+			vector<Token> temp = { type, var };
 
-			tokenBuffer.erase(tokenBuffer.begin(), tokenBuffer.begin() + 5);
+			commandBuffer.push_back(Command(CommandTypes::CALCVAR, Utils::joinVectors(temp, types)));
+
+			tokenBuffer = eraseUntilNextLine(tokenBuffer[0].getLine(), tokenBuffer);
 		}
 		else if (tokenBuffer[0].getType() == TokenTypes::COMMAND && tokenBuffer[0].getStr() == "calc")
 		{
 			Token resType = tokenBuffer[1];
-			Token type1 = tokenBuffer[3];
-			Token op = tokenBuffer[4];
-			Token type2 = tokenBuffer[5];
 
-			commandBuffer.push_back(Command(CommandTypes::CALC, { resType, type1, op, type2 }));
+			vector<Token> args = Parser::getUntilNextLine(tokenBuffer[0].getLine(), tokenBuffer, 3);
+			vector<Token> temp = { resType };
 
-			tokenBuffer.erase(tokenBuffer.begin(), tokenBuffer.begin() + 6);
+			commandBuffer.push_back(Command(CommandTypes::CALC, Utils::joinVectors(temp, args)));
+
+			tokenBuffer = eraseUntilNextLine(tokenBuffer[0].getLine(), tokenBuffer);
 		}
 		else
 		{
@@ -78,7 +79,7 @@ vector<Command> Parser::parse(vector<Token> tokenList)
 vector<int> Parser::getTypes(vector<Token> tokenList, int n)
 {
 	vector<int> output;
-	
+
 	for (int i = 0; i < n; i++)
 		output.push_back(tokenList[i].getType());
 
@@ -94,9 +95,17 @@ vector<Token> Parser::getUntilNextLine(int line, vector<Token> tokenBuffer, int 
 		Token t = tokenBuffer[i];
 
 		if (t.getLine() != line) return output;
-		
+
 		output.push_back(t);
 	}
 
 	return output;
+}
+
+vector<Token> Parser::eraseUntilNextLine(int line, vector<Token> tokenBuffer)
+{
+	while (!tokenBuffer.empty() && tokenBuffer[0].getLine() == line)
+		tokenBuffer.erase(tokenBuffer.begin(), tokenBuffer.begin() + 1);
+
+	return tokenBuffer;
 }
