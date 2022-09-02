@@ -53,11 +53,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="code.pcl">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Interpreter.h">
       <Filter>Header Files</Filter>
     </ClInclude>

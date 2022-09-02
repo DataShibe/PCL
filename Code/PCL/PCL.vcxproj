@@ -141,9 +141,6 @@
     <ClCompile Include="Variable.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="code.pcl" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandTypes.h" />
     <ClInclude Include="Error.h" />

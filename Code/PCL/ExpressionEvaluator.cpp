@@ -1,32 +1,13 @@
+#include "ExpressionEvaluator.h"
+#include "Utils.h"
+
 #include <string>
 #include <stack>
 #include <iostream>
 #include <vector>
-#include "ExpressionEvaluator.h"
-#include "Utils.h"
 
 using namespace std;
 
-vector<string> ExpressionEvaluator::split(string tokens, char del)
-{
-	vector<string> output;
-	string temp = "";
-
-	for (char i : tokens)
-	{
-		if (i == del)
-		{
-			output.push_back(temp);
-			temp = "";
-			continue;
-		}
-		temp += i;
-	}
-
-	output.push_back(temp);
-
-	return output;
-}
 
 int ExpressionEvaluator::precedence(char op) {
 	if (op == '+' || op == '-')
@@ -45,11 +26,13 @@ float ExpressionEvaluator::applyOp(float a, float b, char op) {
 	}
 }
 
+// i gotta admit that i've copied that piece of code soo it's not commented because i literally have no
+// idea how it works but it works so it's better than nothing
 float ExpressionEvaluator::evaluate(string tokens) {
 	stack<float> values;
 	stack<char> ops;
 
-	vector<string> parts = split(tokens, ' ');
+	vector<string> parts = Utils::split(tokens, ' ');
 
 	for (int i = 0; i < parts.size(); i++) {
 		if (parts[i] == "")
@@ -64,7 +47,6 @@ float ExpressionEvaluator::evaluate(string tokens) {
 
 		else if (Utils::isNumber(parts[i])) {
 			values.push(stof(parts[i]));
-			//		i--;
 		}
 		else if (parts[i] == ")")
 		{

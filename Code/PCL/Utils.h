@@ -8,22 +8,21 @@
 #include <vector>
 
 
-class Utils
+namespace Utils
 {
-public:
-	static bool in(std::string str, std::vector<std::string> vec);
-	static bool in(char chr, std::vector<char> vec);
-	static bool in(char chr, std::vector<std::string> vec);
-	static bool isNumber(std::string input);
-	static bool eql(std::vector<int> a, std::vector<int> b);
-	static bool isDigit(char input);
+	bool in(std::string str, std::vector<std::string> vec);
+	bool in(char chr, std::vector<char> vec);
+	bool in(char chr, std::vector<std::string> vec);
+	bool isNumber(std::string input);
+	bool eql(std::vector<int> a, std::vector<int> b);
+	bool isDigit(char input);
 
-	static std::vector<std::string> split(std::string input, char del);
-	static std::vector<Token> joinVectors(std::vector<Token> a, std::vector<Token> b);
-	static std::vector<Token> getFrom(std::vector<Token> a, int n);
+	std::vector<std::string> split(std::string input, char del);
+	std::vector<Token> joinVectors(std::vector<Token> a, std::vector<Token> b);
+	std::vector<Token> getFrom(std::vector<Token> a, int n);
 
-	static std::string removeLastChar(std::string input);
-	static std::string getString(std::vector<Token> a);
+	std::string removeLastChar(std::string input);
+	std::string getString(std::vector<Token> a);
 };
 
 
